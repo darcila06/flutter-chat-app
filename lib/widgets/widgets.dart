@@ -1,3 +1,5 @@
+export 'package:chatapp/widgets/chat_message.dart';
+
 export 'package:chatapp/widgets/custom_button.dart';
 
 export 'package:chatapp/widgets/labels.dart';
