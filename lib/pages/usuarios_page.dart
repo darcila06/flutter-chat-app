@@ -1,5 +1,7 @@
 import 'package:chatapp/models/usuario.dart';
+import 'package:chatapp/services/auth_services.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UsuariosPage extends StatefulWidget {
@@ -10,19 +12,16 @@ class UsuariosPage extends StatefulWidget {
 class _UsuariosPageState extends State<UsuariosPage> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
-  final usuarios = [
-    Usuario(uid: '1', name: 'Maria', email: 'Maria@test.com', online: true),
-    Usuario(
-        uid: '1', name: 'Fernando', email: 'fernando@test.com', online: false),
-    Usuario(uid: '1', name: 'Manuel', email: 'manuel@test.com', online: true)
-  ];
+  final usuarios = [];
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.usuario;
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Mi nombre",
+            usuario!.nombre,
             style: TextStyle(color: Colors.black54),
           ),
           elevation: 1,
@@ -32,7 +31,11 @@ class _UsuariosPageState extends State<UsuariosPage> {
               Icons.exit_to_app,
               color: Colors.amber,
             ),
-            onPressed: () {},
+            onPressed: () {
+              //TODO: Desconectar del Socket
+              Navigator.pushReplacementNamed(context, 'login');
+              AuthService.deleteToken();
+            },
           ),
           actions: [
             Container(
@@ -71,10 +74,10 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   ListTile _usuarioListTile(Usuario usuario) {
     return ListTile(
-      title: Text(usuario.name!),
+      title: Text(usuario.nombre),
       subtitle: Text(usuario.email!),
       leading: CircleAvatar(
-        child: Text(usuario.name!.substring(0, 2)),
+        child: Text(usuario.nombre.substring(0, 2)),
         backgroundColor: Colors.blue[100],
       ),
       trailing: Container(

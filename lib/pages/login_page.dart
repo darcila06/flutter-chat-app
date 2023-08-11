@@ -1,5 +1,8 @@
+import 'package:chatapp/helpers/mostrar_alerta.dart';
+import 'package:chatapp/services/auth_services.dart';
 import 'package:chatapp/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -46,6 +49,7 @@ class __FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -63,8 +67,21 @@ class __FormState extends State<_Form> {
           isPassword: true,
         ),
         CustomButton(
-          onPressed: () {},
           text: "Ingrese",
+          onPressed: authService.autenticate
+              ? null
+              : () async {
+                  FocusScope.of(context).unfocus();
+                  final loginResp = await authService.login(
+                      emailCtrl.text.trim(), passCtrl.text.trim());
+                  if (loginResp) {
+                    Navigator.pushReplacementNamed(context, 'usuarios');
+                  } else {
+                    //Mostrar alerta
+                    mostrarAlerta(
+                        context, 'Login Incorrecto', 'Credenciales Invalidas');
+                  }
+                },
         )
       ]),
     );
