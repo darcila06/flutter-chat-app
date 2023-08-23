@@ -19,15 +19,15 @@ class CustomInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5),
-      margin: EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.all(5),
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
-              offset: Offset(0, 5),
+              offset: const Offset(0, 5),
               blurRadius: 5,
             )
           ]),
